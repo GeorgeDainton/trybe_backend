@@ -1,0 +1,1 @@
+web: gunicorn trybe_backend.wsgi 
