@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os # new
+from dotenv import load_dotenv
+load_dotenv()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,11 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-bp!s&0^lu@rz_m5k-ve0odo5&bd5$hc7hi^s#o^svydnm+ejtr'
+SECRET_KEY = str(os.getenv('SECRET_KEY')) 
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = str(os.getenv('DEBUG'))
 
 ALLOWED_HOSTS = ['trybe-backend.herokuapp.com', 'localhost']
 
@@ -43,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'python-dotenv',
 ]
 
 MIDDLEWARE = [
@@ -79,16 +82,16 @@ WSGI_APPLICATION = 'trybe_backend.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+# https://docs.djangoproject.com/en/4.0/ref/settings/#databasesheroku
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dbvet16nbo3ons',
-        'USER': 'qmldvhthvquowt',
-        'PASSWORD':'ade4addaa25719c8da40b95a3ebae70d428e4515caf5cfdf3b1081c80972f354',
-        'HOST': 'ec2-34-239-241-121.compute-1.amazonaws.com',
-        'PORT': '5432',
+        'ENGINE': str(os.getenv('ENGINE')),
+        'NAME': str(os.getenv('NAME')),
+        'USER': str(os.getenv('USER')),
+        'PASSWORD': str(os.getenv('PASSWORD')),
+        'HOST': str(os.getenv('HOST')),
+        'PORT': str(os.getenv('PORT')),
     }
 }
 
