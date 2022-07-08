@@ -3,7 +3,7 @@ from rest_framework import routers
 from . import views
 
 router = routers.DefaultRouter()
-router.register(r'goals', views.GoalViewSet)
+router.register(r'goals', views.GoalViewSet,basename="goals")
 
 urlpatterns = [
     path('', include(router.urls)),
