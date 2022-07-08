@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 
 from pathlib import Path
 import os # new
+import django_heroku
 load_dotenv()
 
 env_path =Path('.')/'.env'
@@ -94,7 +95,7 @@ WSGI_APPLICATION = 'trybe_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE':'django.db.backends.postgresql',
+        'ENGINE':'django.db.backends.postgresqlhero',
         'NAME': os.getenv('NAME'),
         'USER': os.getenv('USER'),
         'PASSWORD': os.getenv('PASSWORD'),
@@ -147,4 +148,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = False 
+CORS_ALLOW_CREDENTIALS = False
+
+django_heroku.settings(locals())
