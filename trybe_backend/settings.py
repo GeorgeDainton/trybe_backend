@@ -54,12 +54,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-<<<<<<< HEAD
     'djoser',
-    'rest_framework.authtoken', # delete later?
-=======
+    'rest_framework.authtoken',
     'dotenv',
->>>>>>> 4915a5fd0fb16158cdb167b363b719ada634beb7
 ]
 
 MIDDLEWARE = [
@@ -110,14 +107,6 @@ WSGI_APPLICATION = 'trybe_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-<<<<<<< HEAD
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
-    'TEST': {
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
-=======
         'ENGINE':'django.db.backends.postgresqlhero',
         'NAME': os.getenv('NAME'),
         'USER': os.getenv('USER'),
@@ -125,7 +114,6 @@ DATABASES = {
         'HOST': os.getenv('HOST'),
         'PORT': os.getenv('PORT'),
     }
->>>>>>> 4915a5fd0fb16158cdb167b363b719ada634beb7
 }
 
 
