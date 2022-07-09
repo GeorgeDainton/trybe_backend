@@ -6,3 +6,10 @@ class Goal(models.Model):
 
     def __str__(self):
         return self.goal_description
+
+class OwnerModel(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = True
+

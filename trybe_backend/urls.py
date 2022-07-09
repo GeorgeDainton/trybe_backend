@@ -22,5 +22,6 @@ urlpatterns = [
     # path('users/', include('trybe_api.urls')),
     # path('auth/', include('djoser.urls.authtoken')),
     path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.authtoken')),
     # path('accounts/', include('django.contrib.auth.urls')),
 ]
