@@ -1,5 +1,8 @@
 from django.contrib import admin
 from .models import Goal
-# Register your models here.
+from .models import AuthtokenToken
+
 
 admin.site.register(Goal)
+admin.site.register(AuthtokenToken) # work in progress
+
