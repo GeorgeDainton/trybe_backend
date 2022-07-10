@@ -20,7 +20,7 @@ class AuthUser(models.Model): ## work in progress
 
 class Goal(models.Model):
     goal_description = models.CharField(max_length=180)
-    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, null=True)
+    # user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.goal_description
