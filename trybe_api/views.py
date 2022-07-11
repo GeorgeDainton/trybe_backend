@@ -3,27 +3,34 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Goal
+from .models import AuthUser, Goal, AuthtokenToken
 from .serializers import GoalSerializer
 
 class GoalAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        goals = Goal.objects.all()
+        username = request.user
+        user = AuthUser.objects.get(username=username)
+        goals = Goal.objects.filter(owner=user)
         serializer = GoalSerializer(goals, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
+        token = request.META['HTTP_AUTHORIZATION'].replace('Token ', '')
+        auth_token_entry = AuthtokenToken.objects.get(key=token)
+        user_id = auth_token_entry.user_id
+
         data = {
-            # 'id': request.data.get('id'), # work in progress
             'goal_description': request.data.get('goal_description'),
+            'owner': user_id,
         }
         serializer = GoalSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class GoalDetailAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -42,7 +49,7 @@ class GoalDetailAPIView(APIView):
                 status=status.HTTP_204_NO_CONTENT)
         else:
             return Response(
-                {"res": "Goal Doesn't Exist"},
+                {"response": "Goal Doesn't Exist"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -58,6 +65,6 @@ class GoalDetailAPIView(APIView):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(
-            {"res": "Project Doesn't Exist"},
+            {"response": "Goal Doesn't Exist"},
             status=status.HTTP_400_BAD_REQUEST
         )
