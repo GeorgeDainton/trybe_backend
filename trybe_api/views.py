@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import serializers
 
 from .models import Goal, AuthtokenToken
-from .serializers import GoalSerializer, AuthtokenTokenSerializer
+from .serializers import AuthUserSerializer, GoalSerializer, AuthtokenTokenSerializer
 
 class GoalAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -30,9 +30,11 @@ class GoalAPIView(APIView):
         auth_token_entry = AuthtokenToken.objects.get(key=token)
         user_id = auth_token_entry.user_id
         print(user_id)
+        # user_serializer = AuthUserSerializer(data={id: user_id})
+
         data = {
             'goal_description': request.data.get('goal_description'),
-            # 'user_id': user_id,
+            'owner': user_id,
         }
         serializer = GoalSerializer(data=data)
         if serializer.is_valid():
