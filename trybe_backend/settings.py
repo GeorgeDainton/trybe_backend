@@ -105,18 +105,33 @@ WSGI_APPLICATION = 'trybe_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databasesheroku
 
+ON_HEROKU = False
 
-  DATABASES = {
-    'default': {
-        'ENGINE':'django.db.backends.postgresql',
-        'NAME': os.getenv('NAME'),
-        'USER': os.getenv('USER'),
-        'PASSWORD': os.getenv('PASSWORD'),
-        'HOST': os.getenv('HOST'),
-        'PORT': os.getenv('PORT'),
+if ON_HEROKU:
+
+    DATABASES = {
+        'default': {
+            'ENGINE':'django.db.backends.postgresql',
+            'NAME': os.getenv('NAME'),
+            'USER': os.getenv('USER'),
+            'PASSWORD': os.getenv('PASSWORD'),
+            'HOST': os.getenv('HOST'),
+            'PORT': os.getenv('PORT'),
+        }
     }
-  }
   
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE':'django.db.backends.postgresql',
+            'NAME': os.getenv('LOCAL_NAME'),
+            'USER': os.getenv('LOCAL_USER'),
+            'PASSWORD': os.getenv('LOCAL_PASSWORD'),
+            'HOST': os.getenv('LOCAL_HOST'),
+            'PORT': os.getenv('LOCAL_PORT'),
+        }
+  }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
