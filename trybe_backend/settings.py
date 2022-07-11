@@ -105,7 +105,7 @@ WSGI_APPLICATION = 'trybe_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databasesheroku
 
-ON_HEROKU = True
+ON_HEROKU = False
 
 if ON_HEROKU:
 
