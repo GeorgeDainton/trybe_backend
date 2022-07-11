@@ -2,29 +2,21 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import serializers
 
-from .models import Goal, AuthtokenToken
-from .serializers import AuthUserSerializer, GoalSerializer, AuthtokenTokenSerializer
+from .models import AuthUser, Goal, AuthtokenToken
+from .serializers import GoalSerializer
 
 class GoalAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        if 'HTTP_AUTHORIZATION' in request.META: 
-            token = request.META['HTTP_AUTHORIZATION'].replace('Token ', '')
-            # Token 188dd58b04a44b93391df19145d9ccc41c8dac81
-            print(request.user)
-            auth_token_entry = AuthtokenToken.objects.get(key=token)
-            user_id = auth_token_entry.user_id
-            goals = Goal.objects.filter(id=user_id)
-            serializer = GoalSerializer(goals, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response({"response": "Authorization Token not provided"}, status=status.HTTP_400_BAD_REQUEST)
+        username = request.user
+        user = AuthUser.objects.get(username=username)
+        goals = Goal.objects.filter(owner=user)
+        serializer = GoalSerializer(goals, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        print(request.user)
-        # if 'HTTP_AUTHORIZATION' in request.META: 
         token = request.META['HTTP_AUTHORIZATION'].replace('Token ', '')
         auth_token_entry = AuthtokenToken.objects.get(key=token)
         user_id = auth_token_entry.user_id
