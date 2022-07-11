@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class AuthUser(models.Model): ## work in progress
     password = models.CharField(max_length=128)
@@ -20,10 +21,15 @@ class AuthUser(models.Model): ## work in progress
 
 class Goal(models.Model):
     goal_description = models.CharField(max_length=180)
-    # user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, null=True)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    owner = models.ForeignKey('auth.User', related_name='goals', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.goal_description
+
+    class Meta:
+        ordering = ['created_at']
 
 
 class AuthtokenToken(models.Model): # work in progress

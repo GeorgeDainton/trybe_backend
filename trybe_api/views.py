@@ -2,22 +2,37 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import serializers
 
-from .models import Goal
-from .serializers import GoalSerializer
+from .models import Goal, AuthtokenToken
+from .serializers import GoalSerializer, AuthtokenTokenSerializer
 
 class GoalAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
     def get(self, request, *args, **kwargs):
-        goals = Goal.objects.all()
-        serializer = GoalSerializer(goals, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if 'HTTP_AUTHORIZATION' in request.META: 
+            token = request.META['HTTP_AUTHORIZATION'].replace('Token ', '')
+            # Token 188dd58b04a44b93391df19145d9ccc41c8dac81
+            auth_token_entry = AuthtokenToken.objects.get(key=token)
+            user_id = auth_token_entry.user_id
+            goals = Goal.objects.filter(id=user_id)
+            serializer = GoalSerializer(goals, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"response": "Authorization Token not provided"}, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request, *args, **kwargs):
+        # if 'HTTP_AUTHORIZATION' in request.META: 
+        token = request.META['HTTP_AUTHORIZATION'].replace('Token ', '')
+        auth_token_entry = AuthtokenToken.objects.get(key=token)
+        user_id = auth_token_entry.user_id
+        print(user_id)
         data = {
-            # 'id': request.data.get('id'), # work in progress
             'goal_description': request.data.get('goal_description'),
+            # 'user_id': user_id,
         }
         serializer = GoalSerializer(data=data)
         if serializer.is_valid():
@@ -42,7 +57,7 @@ class GoalDetailAPIView(APIView):
                 status=status.HTTP_204_NO_CONTENT)
         else:
             return Response(
-                {"res": "Goal Doesn't Exist"},
+                {"response": "Goal Doesn't Exist"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -58,6 +73,6 @@ class GoalDetailAPIView(APIView):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(
-            {"res": "Project Doesn't Exist"},
+            {"response": "Goal Doesn't Exist"},
             status=status.HTTP_400_BAD_REQUEST
         )
