@@ -121,15 +121,15 @@ if ON_HEROKU:
   }
   
 else:
-
-  DATABASES = {
-      'default': {
-          'ENGINE': 'django.db.backends.sqlite3',
-          'NAME': BASE_DIR / 'db.sqlite3',
-      },
-      'TEST': {
-          'NAME': BASE_DIR / 'db.sqlite3',
-      },
+    DATABASES = {
+    'default': {
+        'ENGINE':'django.db.backends.postgresql',
+        'NAME': os.getenv('LOCAL_NAME'),
+        'USER': os.getenv('LOCAL_USER'),
+        'PASSWORD': os.getenv('LOCAL_PASSWORD'),
+        'HOST': os.getenv('LOCAL_HOST'),
+        'PORT': os.getenv('LOCAL_PORT'),
+    }
   }
 
 
@@ -178,4 +178,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
 
-django_heroku.settings(locals(), databases= False)
+django_heroku.settings(locals(), databases=False)
