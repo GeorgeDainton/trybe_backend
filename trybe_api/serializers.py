@@ -10,11 +10,11 @@ class GoalSerializer(serializers.ModelSerializer):
 
 
 class AuthUserSerializer(serializers.ModelSerializer):
-    goals = serializers.PrimaryKeyRelatedField(many=True, read_only=False, queryset=Goal.objects.all())
+    # goals = serializers.PrimaryKeyRelatedField(many=True, read_only=False, queryset=Goal.objects.all())
 
     class Meta:
         model = AuthUser
-        fields = ('id', 'username', 'goals')
+        fields = ('id', 'username', 'email' ) #'goals'
 
 
 class AuthtokenTokenSerializer(serializers.ModelSerializer):
