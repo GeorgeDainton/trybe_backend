@@ -10,8 +10,8 @@ from .serializers import GoalSerializer, AuthtokenTokenSerializer
 class GoalAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+    # def perform_create(self, serializer):
+    #     serializer.save(owner=self.request.user)
 
     def get(self, request, *args, **kwargs):
         if 'HTTP_AUTHORIZATION' in request.META: 
