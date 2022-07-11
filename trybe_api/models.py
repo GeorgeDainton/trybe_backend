@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-class AuthUser(models.Model): ## work in progress
+class AuthUser(models.Model): 
     password = models.CharField(max_length=128)
     last_login = models.DateTimeField(blank=True, null=True)
     is_superuser = models.BooleanField()
@@ -22,8 +22,6 @@ class AuthUser(models.Model): ## work in progress
 class Goal(models.Model):
     goal_description = models.CharField(max_length=180)
     owner = models.ForeignKey(AuthUser, related_name='goals', on_delete=models.CASCADE)
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    # owner = models.ForeignKey('auth.User', related_name='goals', on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -33,7 +31,7 @@ class Goal(models.Model):
         ordering = ['created_at']
 
 
-class AuthtokenToken(models.Model): # work in progress
+class AuthtokenToken(models.Model):
     key = models.CharField(primary_key=True, max_length=40)
     created = models.DateTimeField()
     user = models.OneToOneField(User, models.DO_NOTHING)

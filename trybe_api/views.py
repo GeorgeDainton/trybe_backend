@@ -10,13 +10,11 @@ from .serializers import AuthUserSerializer, GoalSerializer, AuthtokenTokenSeria
 class GoalAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
-    # def perform_create(self, serializer):
-    #     serializer.save(owner=self.request.user)
-
     def get(self, request, *args, **kwargs):
         if 'HTTP_AUTHORIZATION' in request.META: 
             token = request.META['HTTP_AUTHORIZATION'].replace('Token ', '')
             # Token 188dd58b04a44b93391df19145d9ccc41c8dac81
+            print(request.user)
             auth_token_entry = AuthtokenToken.objects.get(key=token)
             user_id = auth_token_entry.user_id
             goals = Goal.objects.filter(id=user_id)
@@ -25,12 +23,11 @@ class GoalAPIView(APIView):
         return Response({"response": "Authorization Token not provided"}, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request, *args, **kwargs):
+        print(request.user)
         # if 'HTTP_AUTHORIZATION' in request.META: 
         token = request.META['HTTP_AUTHORIZATION'].replace('Token ', '')
         auth_token_entry = AuthtokenToken.objects.get(key=token)
         user_id = auth_token_entry.user_id
-        print(user_id)
-        # user_serializer = AuthUserSerializer(data={id: user_id})
 
         data = {
             'goal_description': request.data.get('goal_description'),
@@ -41,6 +38,7 @@ class GoalAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class GoalDetailAPIView(APIView):
     permission_classes = [IsAuthenticated]
