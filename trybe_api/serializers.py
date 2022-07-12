@@ -3,11 +3,11 @@ from .models import Goal, AuthtokenToken, AuthUser, InvitedSupporter, AcceptedSu
 
 
 class GoalSerializer(serializers.ModelSerializer):
-    supporters = serializers.PrimaryKeyRelatedField(many=True, read_only=False, queryset=AcceptedSupporter.objects.all())
+    # supporters = serializers.PrimaryKeyRelatedField(many=True, allow_null=True, read_only=False, queryset=AcceptedSupporter.objects.all())
 
     class Meta:
         model = Goal
-        fields = ('id', 'goal_description', 'created_at', 'owner', 'supporters')
+        fields = ('id', 'goal_description', 'created_at', 'owner') #, 'supporters'
         # related_object = 'auth.user'
 
 
@@ -24,10 +24,11 @@ class AuthtokenTokenSerializer(serializers.ModelSerializer):
         model = AuthtokenToken
         fields = ('key', 'user_id')
 
+
 class InvitedSupporterSerializer(serializers.ModelSerializer):
     class Meta:
         model = InvitedSupporter
-        fields = ('id', 'goal', 'supporter_email')
+        fields = ('id', 'goal_id', 'supporter_email')
 
 class AcceptedSupporterSerializer(serializers.ModelSerializer):
     class Meta:
