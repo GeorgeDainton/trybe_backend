@@ -117,7 +117,7 @@ class MessagesAPIView(APIView):
     def get(self, request, id, *args, **kwargs):
         goal_id = id
         messages = Messages.objects.filter(goal_id=goal_id)
-        serializer = MessagesSerializer(data=messages, many=True)
+        serializer = MessagesSerializer(messages, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, id, *args, **kwargs):
@@ -126,7 +126,7 @@ class MessagesAPIView(APIView):
         user_id = auth_token_entry.user_id
 
         data = {
-            'message': request.data.get('goal_description'),
+            'message': request.data.get('message'),
             'sender_id': user_id,
             'goal_id': id,
         }
