@@ -51,7 +51,7 @@ class InvitedSupporter(models.Model):
 class Messages(models.Model):
     goal_id = models.ForeignKey(Goal, related_name='messages', on_delete=models.CASCADE)
     sender_id = models.ForeignKey(AuthUser, related_name='messages', on_delete=models.CASCADE)
-    sender_username = models.CharField(max_length=100, null=True, blank=True) 
+    sender_username = models.CharField(max_length=100, default='supportman') 
     message = models.CharField(max_length=280)
     created_at = models.DateTimeField(auto_now_add=True)
 

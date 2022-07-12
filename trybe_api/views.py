@@ -124,12 +124,13 @@ class MessagesAPIView(APIView):
         token = request.META['HTTP_AUTHORIZATION'].replace('Token ', '')
         auth_token_entry = AuthtokenToken.objects.get(key=token)
         user_id = auth_token_entry.user_id
-        usersername = request.user
+        entry = AuthUser.objects.get(id=user_id)
+        username = entry.username
 
         data = {
             'message': request.data.get('message'),
             'sender_id': user_id,
-            'sender_username': usersername,
+            'sender_username': username,
             'goal_id': id,
         }
         serializer = MessagesSerializer(data=data)
