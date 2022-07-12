@@ -33,4 +33,4 @@ class InvitedSupporterSerializer(serializers.ModelSerializer):
 class AcceptedSupporterSerializer(serializers.ModelSerializer):
     class Meta:
         model = AcceptedSupporter
-        fields = ('id', 'goal', 'supporter_email', 'supporter')
+        fields = ('id', 'goal_id', 'supporter_email', 'supporter_id')

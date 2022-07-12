@@ -110,7 +110,8 @@ class AcceptedSupporterAPIView(APIView):
 
         if InvitedSupporter.objects.filter(supporter_email=supporter_email).exists():
             supporter_entry = InvitedSupporter.objects.get(supporter_email=supporter_email)
-            goal_id = supporter_entry.goal_id
+            goal_id = supporter_entry.id
+            print('goal id is' + str(goal_id))
 
             data = {
                 'goal_id': goal_id,
