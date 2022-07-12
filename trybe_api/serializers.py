@@ -29,3 +29,9 @@ class SupporterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Supporter
         fields = ('id', 'goal_id', 'supporter_email', 'supporter_accepted', 'supporter_id')
+
+class InvitedSupporterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Supporter
+        fields = ('id', )
+

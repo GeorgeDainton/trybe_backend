@@ -106,7 +106,15 @@ WSGI_APPLICATION = 'trybe_backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databasesheroku
 
 
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    'TEST': {
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+}
   
 
 

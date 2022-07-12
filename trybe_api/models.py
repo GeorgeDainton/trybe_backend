@@ -23,7 +23,7 @@ class AuthUser(models.Model):
 
 class Goal(models.Model):
     goal_description = models.CharField(max_length=180)
-    owner = models.ForeignKey(AuthUser, related_name='goals', on_delete=models.CASCADE)
+    owner = models.ForeignKey(AuthUser, related_name='goals', default=1, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -53,3 +53,14 @@ class Supporter(models.Model):
     # class Meta:
     #     unique_together = (("goal_id", "supporter_email"),)
 
+
+class Invited_Supporter(models.Model):
+    goal_id = models.ForeignKey(Goal, related_name='supporters', on_delete=models.CASCADE)
+    # supporter_email = models.ForeignKey(AuthUser, related_name='supporters', on_delete=models.CASCADE)
+    supporter_email = models.CharField(max_length=250)
+    
+class Active_Supporter(models.Model):
+    goal_id = models.ForeignKey(Goal, related_name='supporters', on_delete=models.CASCADE)
+    supporter_email = models.ForeignKey(Invited_Supporter, related_name='Active_supporter', on_delete=models.CASCADE)
+    supporter_id = models.ForeignKey(AuthUser, related_name='Support_roles', on_delete=models.CASCADE)
+     # is supporter_id auto_generated?
