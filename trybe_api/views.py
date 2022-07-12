@@ -1,10 +1,12 @@
+from email import message
+import idna
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
-from .models import AuthUser, Goal, AuthtokenToken, Supporter
-from .serializers import GoalSerializer, SupporterSerializer
+from .models import AuthUser, Goal, AuthtokenToken, Supporter, Messages
+from .serializers import GoalSerializer, SupporterSerializer, MessagesSerializer
 from trybe_api import serializers
 
 class GoalAPIView(APIView):
@@ -101,3 +103,28 @@ class SupporterAPIView(APIView):
             {"response": "Supporter Doesn't Exist"},
             status=status.HTTP_400_BAD_REQUEST
         )
+
+class MessagesAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id, *args, **kwargs):
+        goal_id = id
+        messages = Messages.objects.filter(goal_id=goal_id)
+        serializer = MessagesSerializer(data=messages, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, id, *args, **kwargs):
+        token = request.META['HTTP_AUTHORIZATION'].replace('Token ', '')
+        auth_token_entry = AuthtokenToken.objects.get(key=token)
+        user_id = auth_token_entry.user_id
+
+        data = {
+            'message': request.data.get('goal_description'),
+            'sender_id': user_id,
+            'goal_id': id,
+        }
+        serializer = MessagesSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
