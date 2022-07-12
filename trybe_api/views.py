@@ -97,7 +97,7 @@ class AcceptedSupporterAPIView(APIView):
                 data = {
                     'goal_id': supporter.goal_id_id,
                     'supporter_email': supporter.supporter_email,
-                    'supporter_id': request.data.get('supporter_id')
+                    'supporter_id': request.data.get('supporter_id'),
                 }
                 serializer = AcceptedSupporterSerializer(data=data)
                 if serializer.is_valid():
@@ -124,10 +124,12 @@ class MessagesAPIView(APIView):
         token = request.META['HTTP_AUTHORIZATION'].replace('Token ', '')
         auth_token_entry = AuthtokenToken.objects.get(key=token)
         user_id = auth_token_entry.user_id
+        usersername = request.user
 
         data = {
             'message': request.data.get('message'),
             'sender_id': user_id,
+            'sender_username': usersername,
             'goal_id': id,
         }
         serializer = MessagesSerializer(data=data)

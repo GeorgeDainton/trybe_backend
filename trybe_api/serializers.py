@@ -36,7 +36,7 @@ class InvitedSupporterSerializer(serializers.ModelSerializer):
 class MessagesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Messages
-        fields = ('id', 'goal_id', 'sender_id', 'message', 'created_at')
+        fields = ('id', 'goal_id', 'sender_id', 'sender_username', 'message', 'created_at')
         
 
 

@@ -51,14 +51,16 @@ class InvitedSupporter(models.Model):
 class Messages(models.Model):
     goal_id = models.ForeignKey(Goal, related_name='messages', on_delete=models.CASCADE)
     sender_id = models.ForeignKey(AuthUser, related_name='messages', on_delete=models.CASCADE)
+    sender_username = models.ForeignKey(AuthUser, related_name='messages', on_delete=models.CASCADE)
     message = models.CharField(max_length=280)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.message, self.sender_id
+        return self.message, self.sender_id, self.sender_username
 
     class Meta:
         ordering = ['created_at']
+
 class AcceptedSupporter(models.Model):
     goal_id = models.ForeignKey(Goal, related_name='accepted_supporters', on_delete=models.CASCADE)
     supporter_email = models.CharField(max_length=250)
