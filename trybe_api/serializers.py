@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import Goal, AuthtokenToken, AuthUser, Supporter
+from .models import Goal, AuthtokenToken, AuthUser, InvitedSupporter, AcceptedSupporter
 
 
 class GoalSerializer(serializers.ModelSerializer):
-    supporters = serializers.PrimaryKeyRelatedField(many=True, read_only=False, queryset=Supporter.objects.all())
+    supporters = serializers.PrimaryKeyRelatedField(many=True, read_only=False, queryset=AcceptedSupporter.objects.all())
 
     class Meta:
         model = Goal
@@ -24,14 +24,12 @@ class AuthtokenTokenSerializer(serializers.ModelSerializer):
         model = AuthtokenToken
         fields = ('key', 'user_id')
 
-
-class SupporterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Supporter
-        fields = ('id', 'goal_id', 'supporter_email', 'supporter_accepted', 'supporter_id')
-
 class InvitedSupporterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Supporter
-        fields = ('id', )
+        model = InvitedSupporter
+        fields = ('id', 'goal', 'supporter_email')
 
+class AcceptedSupporterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AcceptedSupporter
+        fields = ('id', 'goal', 'supporter_email', 'supporter')

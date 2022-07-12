@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
-from .models import AuthUser, Goal, AuthtokenToken, Supporter
-from .serializers import GoalSerializer, SupporterSerializer
+from .models import AuthUser, Goal, AuthtokenToken, InvitedSupporter, AcceptedSupporter
+from .serializers import GoalSerializer, InvitedSupporterSerializer, AcceptedSupporterSerializer
 from trybe_api import serializers
 
 class GoalAPIView(APIView):
@@ -70,34 +70,59 @@ class GoalDetailAPIView(APIView):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-class SupporterAPIView(APIView):
+class InvitedSupporterAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, id, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         data = {
-          'goal_id': id,
+          'goal_id': request.data.get('goal_id'),
           'supporter_email': request.data.get('supporter_email'),
         }
-        serializer = SupporterSerializer(data=data)
+        serializer = InvitedSupporterSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def patch(self, request, *args, **kwargs):
+    # def patch(self, request, *args, **kwargs):
+    #     supporter_email = request.data.get('supporter_email')
+    #     if Supporter.objects.filter(supporter_email=supporter_email).exists():
+    #         supporter = Supporter.objects.get(supporter_email=supporter_email)
+    #         data = {
+    #             'supporter_id': request.data.get('supporter_id'),
+    #             'supporter_accepted': True,
+    #         }
+    #         serializer = SupporterSerializer(instance=supporter, data=data, partial=True)
+    #         if serializer.is_valid():
+    #             serializer.save()
+    #             return Response(serializer.data, status=status.HTTP_200_OK)
+    #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    #     return Response(
+    #         {"response": "Supporter Doesn't Exist"},
+    #         status=status.HTTP_400_BAD_REQUEST
+    #     )
+
+class AcceptedSupporterAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
         supporter_email = request.data.get('supporter_email')
-        if Supporter.objects.filter(supporter_email=supporter_email).exists():
-            supporter = Supporter.objects.get(supporter_email=supporter_email)
+
+        if InvitedSupporter.objects.filter(supporter_email=supporter_email).exists():
+            supporter_entry = InvitedSupporter.objects.get(supporter_email=supporter_email)
+            goal_id = supporter_entry.goal_id
+
             data = {
-                'supporter_id': request.data.get('supporter_id'),
-                'supporter_accepted': True,
+                'goal_id': goal_id,
+                'supporter_email': supporter_email,
+                'supporter_id': request.data.get('supporter_id')
             }
-            serializer = SupporterSerializer(instance=supporter, data=data, partial=True)
+            serializer = AcceptedSupporterSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(
-            {"response": "Supporter Doesn't Exist"},
+            {"response": "User doesn't support any goals"},
             status=status.HTTP_400_BAD_REQUEST
         )
