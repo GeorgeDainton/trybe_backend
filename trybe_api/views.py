@@ -24,7 +24,7 @@ class GoalAPIView(APIView):
 
         data = {
             'goal_description': request.data.get('goal_description'),
-            'owner_id': user_id,
+            'owner': user_id,
         }
         serializer = GoalSerializer(data=data)
         if serializer.is_valid():
