@@ -17,8 +17,6 @@ class AuthUser(models.Model):
     class Meta:
         managed = False
         db_table = 'auth_user'
-        # unique_together = (("id", "email"),)
-
 
 
 class Goal(models.Model):
@@ -43,24 +41,12 @@ class AuthtokenToken(models.Model):
         db_table = 'authtoken_token'
 
 
-# class Supporter(models.Model):
-#     goal_id = models.ForeignKey(Goal, related_name='supporters', on_delete=models.CASCADE)
-#     # supporter_email = models.ForeignKey(AuthUser, related_name='supporters', on_delete=models.CASCADE)
-#     supporter_email = models.CharField(max_length=250)
-#     supporter_accepted = models.BooleanField(default=False)
-#     supporter_id = models.IntegerField(blank=True, null=True)
-# 
-    # class Meta:
-    #     unique_together = (("goal_id", "supporter_email"),)
-
-
 class InvitedSupporter(models.Model):
     goal_id = models.ForeignKey(Goal, related_name='invited_supporters', on_delete=models.CASCADE)
     supporter_email = models.CharField(max_length=250)
     
-    
+
 class AcceptedSupporter(models.Model):
     goal_id = models.ForeignKey(Goal, related_name='accepted_supporters', on_delete=models.CASCADE)
-    # supporter_email = models.ForeignKey(InvitedSupporter, related_name='Active_supporter', on_delete=models.CASCADE)
     supporter_email = models.CharField(max_length=250)
     supporter_id = models.ForeignKey(AuthUser, related_name='accepted_supporters', on_delete=models.CASCADE)

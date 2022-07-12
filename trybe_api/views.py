@@ -3,9 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
-from .models import AuthUser, Goal, AuthtokenToken, InvitedSupporter, AcceptedSupporter
+from .models import AuthUser, Goal, AuthtokenToken, InvitedSupporter
 from .serializers import GoalSerializer, InvitedSupporterSerializer, AcceptedSupporterSerializer
-from trybe_api import serializers
 
 class GoalAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -84,24 +83,6 @@ class InvitedSupporterAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # def patch(self, request, *args, **kwargs):
-    #     supporter_email = request.data.get('supporter_email')
-    #     if Supporter.objects.filter(supporter_email=supporter_email).exists():
-    #         supporter = Supporter.objects.get(supporter_email=supporter_email)
-    #         data = {
-    #             'supporter_id': request.data.get('supporter_id'),
-    #             'supporter_accepted': True,
-    #         }
-    #         serializer = SupporterSerializer(instance=supporter, data=data, partial=True)
-    #         if serializer.is_valid():
-    #             serializer.save()
-    #             return Response(serializer.data, status=status.HTTP_200_OK)
-    #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    #     return Response(
-    #         {"response": "Supporter Doesn't Exist"},
-    #         status=status.HTTP_400_BAD_REQUEST
-    #     )
-
 class AcceptedSupporterAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -112,8 +93,6 @@ class AcceptedSupporterAPIView(APIView):
             supporter_entries = InvitedSupporter.objects.filter(supporter_email=supporter_email)
             serializer_array = []
             for supporter in supporter_entries:
-                print(supporter.supporter_email)
-                print(supporter.goal_id_id)
                 data = {
                     'goal_id': supporter.goal_id_id,
                     'supporter_email': supporter.supporter_email,
