@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Goal, AuthtokenToken, AuthUser, InvitedSupporter, AcceptedSupporter
+from .models import Goal, AuthtokenToken, AuthUser, InvitedSupporter, AcceptedSupporter, Messages
 
 
 class AcceptedSupporterSerializer(serializers.ModelSerializer):

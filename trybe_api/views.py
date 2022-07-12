@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
 from .models import AuthUser, Goal, AuthtokenToken, InvitedSupporter, Messages
-from .serializers import GoalSerializer, InvitedSupporterSerializer, AcceptedSupporterSerializer
+from .serializers import GoalSerializer, InvitedSupporterSerializer, AcceptedSupporterSerializer, MessagesSerializer
 
 class GoalAPIView(APIView):
     permission_classes = [IsAuthenticated]
