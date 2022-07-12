@@ -109,20 +109,23 @@ class AcceptedSupporterAPIView(APIView):
         supporter_email = request.data.get('supporter_email')
 
         if InvitedSupporter.objects.filter(supporter_email=supporter_email).exists():
-            supporter_entry = InvitedSupporter.objects.get(supporter_email=supporter_email)
-            goal_id = supporter_entry.id
-            print('goal id is' + str(goal_id))
-
-            data = {
-                'goal_id': goal_id,
-                'supporter_email': supporter_email,
-                'supporter_id': request.data.get('supporter_id')
-            }
-            serializer = AcceptedSupporterSerializer(data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            supporter_entries = InvitedSupporter.objects.filter(supporter_email=supporter_email)
+            serializer_array = []
+            for supporter in supporter_entries:
+                print(supporter.supporter_email)
+                print(supporter.goal_id_id)
+                data = {
+                    'goal_id': supporter.goal_id_id,
+                    'supporter_email': supporter.supporter_email,
+                    'supporter_id': request.data.get('supporter_id')
+                }
+                serializer = AcceptedSupporterSerializer(data=data)
+                if serializer.is_valid():
+                    serializer.save()
+                    serializer_array.append(serializer.data)
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer_array, status=status.HTTP_200_OK)
         return Response(
             {"response": "User doesn't support any goals"},
             status=status.HTTP_400_BAD_REQUEST
