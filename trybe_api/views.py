@@ -1,13 +1,11 @@
-from email import message
-import idna
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
-from .models import AuthUser, Goal, AuthtokenToken, Supporter, Messages
-from .serializers import GoalSerializer, SupporterSerializer, MessagesSerializer
-from trybe_api import serializers
+from .models import AuthUser, Goal, AuthtokenToken, InvitedSupporter, Messages
+from .serializers import GoalSerializer, InvitedSupporterSerializer, AcceptedSupporterSerializer
 
 class GoalAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -26,7 +24,7 @@ class GoalAPIView(APIView):
 
         data = {
             'goal_description': request.data.get('goal_description'),
-            'owner': user_id,
+            'owner_id': user_id,
         }
         serializer = GoalSerializer(data=data)
         if serializer.is_valid():
@@ -72,35 +70,44 @@ class GoalDetailAPIView(APIView):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-class SupporterAPIView(APIView):
+class InvitedSupporterAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, id, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         data = {
-          'goal_id': id,
+          'goal_id': request.data.get('goal_id'),
           'supporter_email': request.data.get('supporter_email'),
         }
-        serializer = SupporterSerializer(data=data)
+        serializer = InvitedSupporterSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def patch(self, request, *args, **kwargs):
+class AcceptedSupporterAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
         supporter_email = request.data.get('supporter_email')
-        if Supporter.objects.filter(supporter_email=supporter_email).exists():
-            supporter = Supporter.objects.get(supporter_email=supporter_email)
-            data = {
-                'supporter_id': request.data.get('supporter_id'),
-                'supporter_accepted': True,
-            }
-            serializer = SupporterSerializer(instance=supporter, data=data, partial=True)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        if InvitedSupporter.objects.filter(supporter_email=supporter_email).exists():
+            supporter_entries = InvitedSupporter.objects.filter(supporter_email=supporter_email)
+            serializer_array = []
+            for supporter in supporter_entries:
+                data = {
+                    'goal_id': supporter.goal_id_id,
+                    'supporter_email': supporter.supporter_email,
+                    'supporter_id': request.data.get('supporter_id')
+                }
+                serializer = AcceptedSupporterSerializer(data=data)
+                if serializer.is_valid():
+                    serializer.save()
+                    serializer_array.append(serializer.data)
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer_array, status=status.HTTP_200_OK)
         return Response(
-            {"response": "Supporter Doesn't Exist"},
+            {"response": "User doesn't support any goals"},
             status=status.HTTP_400_BAD_REQUEST
         )
 

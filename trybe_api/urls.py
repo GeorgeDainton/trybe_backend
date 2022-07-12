@@ -6,7 +6,7 @@ urlpatterns = [
     path("goals/", views.GoalAPIView.as_view()),
     path("goals/<int:id>/", views.GoalDetailAPIView.as_view()),
     path("goals/<int:id>/messages/", views.MessagesAPIView.as_view()), 
-    path("supporters/", views.SupporterAPIView.as_view()),
-    path("supporters/<int:id>/", views.SupporterAPIView.as_view()),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path("supporters/add/", views.InvitedSupporterAPIView.as_view()),
+    path("supporters/connect/", views.AcceptedSupporterAPIView.as_view()),
+    path("api-auth/", include('rest_framework.urls', namespace='rest_framework')),
 ]
