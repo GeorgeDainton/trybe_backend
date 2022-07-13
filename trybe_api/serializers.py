@@ -12,7 +12,7 @@ class GoalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Goal
-        fields = ('id', 'goal_description', 'created_at', 'owner') 
+        fields = ('id', 'goal_description', 'created_at', 'owner', 'progress') 
         # related_object = AcceptedSupporter
 
 

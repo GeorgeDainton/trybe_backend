@@ -24,6 +24,7 @@ class Goal(models.Model):
     goal_description = models.CharField(max_length=180)
     owner = models.ForeignKey(AuthUser, related_name='goals', on_delete=models.CASCADE, null=True, blank=True  )
     created_at = models.DateTimeField(default=timezone.now)
+    progress = models.DecimalField(default=0.01, decimal_places=2, max_digits=3)
 
     def __str__(self):
         return self.goal_description
