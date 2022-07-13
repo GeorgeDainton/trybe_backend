@@ -44,9 +44,15 @@ class AuthtokenToken(models.Model):
 class InvitedSupporter(models.Model):
     goal_id = models.ForeignKey(Goal, related_name='invited_supporters', on_delete=models.CASCADE)
     supporter_email = models.CharField(max_length=250)
+
+    class Meta:
+        unique_together = ('goal_id', 'supporter_email')
     
 
 class AcceptedSupporter(models.Model):
     goal_id = models.ForeignKey(Goal, related_name='accepted_supporters', on_delete=models.CASCADE)
     supporter_email = models.CharField(max_length=250)
     supporter_id = models.ForeignKey(AuthUser, related_name='accepted_supporters', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('goal_id', 'supporter_email')

@@ -36,14 +36,12 @@ class GoalDetailAPIView(APIView):
 
     def get(self, request, id, *args, **kwargs):
         supporter_entries = AcceptedSupporter.objects.filter(goal_id=id)
-        print(supporter_entries)
         supporter_serializer_array = []
 
         for supporter in supporter_entries:
             supporter_instance = AuthUser.objects.get(id=supporter.supporter_id_id)
             supporter_serializer = AuthUserSerializer(instance=supporter_instance)
             supporter_serializer_array.append(supporter_serializer.data)
-        print(supporter_serializer_array)
         
         goal = Goal.objects.get(id=id)
         serializer = GoalSerializer(goal)
@@ -116,6 +114,6 @@ class AcceptedSupporterAPIView(APIView):
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer_array, status=status.HTTP_200_OK)
         return Response(
-            {"response": "User doesn't support any goals"},
+            {"response": "User doesn't exist or support any goals"},
             status=status.HTTP_400_BAD_REQUEST
         )
