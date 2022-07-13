@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from djoser.serializers import UserSerializer
 from .models import Goal, AuthtokenToken, AuthUser, InvitedSupporter, AcceptedSupporter
 
 
@@ -16,7 +17,7 @@ class GoalSerializer(serializers.ModelSerializer):
         # related_object = AcceptedSupporter
 
 
-class AuthUserSerializer(serializers.ModelSerializer):
+class AuthUserSerializer(UserSerializer):
     class Meta:
         model = AuthUser
         fields = ('id', 'username', 'email')
