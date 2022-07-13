@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-from asyncio import FastChildWatcher
 from dotenv import load_dotenv
 
 from pathlib import Path
@@ -102,26 +101,26 @@ WSGI_APPLICATION = 'trybe_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databasesheroku
 
-DATABASES = { 'default': { 
-        'ENGINE':'django.db.backends.postgresql',
-        'NAME': os.getenv('NAME'),
-        'USER': os.getenv('USER'),
-        'PASSWORD': os.getenv('PASSWORD'),
-        'HOST': os.getenv('HOST'),
-        'PORT': os.getenv('PORT'),
-    }
-}
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     },
-#     'TEST': {
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     },
+# DATABASES = { 'default': { 
+#         'ENGINE':'django.db.backends.postgresql',
+#         'NAME': os.getenv('NAME'),
+#         'USER': os.getenv('USER'),
+#         'PASSWORD': os.getenv('PASSWORD'),
+#         'HOST': os.getenv('HOST'),
+#         'PORT': os.getenv('PORT'),
+#     }
 # }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    'TEST': {
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+}
 
 
 # Password validation
@@ -169,4 +168,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
 
-django_heroku.settings(locals(), databases=False)
+# django_heroku.settings(locals(), databases=False)
