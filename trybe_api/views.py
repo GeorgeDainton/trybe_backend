@@ -67,6 +67,7 @@ class GoalDetailAPIView(APIView):
             goal = Goal.objects.get(id=id)
             data = {
               'goal_description': request.data.get('goal_description'),
+              'progress': request.data.get('progress')
             }
             serializer = GoalSerializer(instance=goal, data=data, partial=True)
             if serializer.is_valid():
