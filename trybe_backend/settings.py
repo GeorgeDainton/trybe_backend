@@ -39,7 +39,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = ['trybe-backend.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['trybe-backend.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -108,13 +108,12 @@ WSGI_APPLICATION = 'trybe_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE':'django.db.backends.postgresql',
-        'NAME': os.getenv('NAME'),
-        'USER': os.getenv('USER'),
-        'PASSWORD': os.getenv('PASSWORD'),
-        'HOST': os.getenv('HOST'),
-        'PORT': os.getenv('PORT'),
-    }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    'TEST': {
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
 }
   
 
@@ -163,5 +162,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CORS
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
-
-django_heroku.settings(locals())
