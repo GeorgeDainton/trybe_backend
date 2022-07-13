@@ -5,7 +5,6 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import AuthUser, Goal, AuthtokenToken, InvitedSupporter, AcceptedSupporter
 from .serializers import GoalSerializer, InvitedSupporterSerializer, AcceptedSupporterSerializer, AuthUserSerializer
-from djoser.serializers import UserSerializer
 
 class GoalAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -37,34 +36,19 @@ class GoalDetailAPIView(APIView):
 
     def get(self, request, id, *args, **kwargs):
         supporter_entries = AcceptedSupporter.objects.filter(goal_id=id)
-        supporters_array = []
-        sup_id_arr = []
+        print(supporter_entries)
+        supporter_serializer_array = []
+
         for supporter in supporter_entries:
-            sup_id_arr.append(supporter.supporter_id_id)
-        print(sup_id_arr)
-        sups = AuthUser.objects.filter(pk__in=sup_id_arr)
-        print(sups)
-        # supporter_serializer = AuthUserSerializer(data=sups, many=True)
-        # if supporter_serializer.is_valid():
-        #     print('valid')
+            supporter_instance = AuthUser.objects.get(id=supporter.supporter_id_id)
+            supporter_serializer = AuthUserSerializer(instance=supporter_instance)
+            supporter_serializer_array.append(supporter_serializer.data)
+        print(supporter_serializer_array)
+        
+        goal = Goal.objects.get(id=id)
+        serializer = GoalSerializer(goal)
 
-        ser = AuthUser.objects.get(id=2)
-        serial = AuthUserSerializer(data=ser)
-        if serial.is_valid():
-            print('valid2')
-
-        # for supporter in supporter_entries:
-        #     supporter_instance = (AuthUser.objects.get(id=supporter.supporter_id_id))
-        #     print(supporter_instance)
-        #     supporter_serializer = AuthUserSerializer(data=supporter_instance)
-        #     if supporter_serializer.is_valid():
-        #         print('serializer valid')
-        #         supporter_serializer.save()
-        #         supporters_array.append(supporter_serializer.data)
-        # goal = Goal.objects.get(id=id)
-        # serializer = GoalSerializer(goal)
-        # print(supporters_array)
-        return Response({"goal": 'none', "supporters" : "none"}, status=status.HTTP_200_OK)
+        return Response({"goal": serializer.data, "supporters" : supporter_serializer_array}, status=status.HTTP_200_OK)
 
     def delete(self, request, id, *args, **kwargs):
         if Goal.objects.filter(id=id).exists():
