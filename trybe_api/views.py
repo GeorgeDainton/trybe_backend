@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 
 
 from .models import AuthUser, Goal, AuthtokenToken, InvitedSupporter, Messages, AcceptedSupporter
-from .serializers import GoalSerializer, InvitedSupporterSerializer, AcceptedSupporterSerializer, MessagesSerializer
+from .serializers import GoalSerializer, InvitedSupporterSerializer, AcceptedSupporterSerializer, MessagesSerializer, AuthUserSerializer
 
 
 class GoalAPIView(APIView):
@@ -48,7 +48,6 @@ class GoalDetailAPIView(APIView):
         
         goal = Goal.objects.get(id=id)
         serializer = GoalSerializer(goal)
-
         return Response({"goal": serializer.data, "supporters" : supporter_serializer_array}, status=status.HTTP_200_OK)
 
     def delete(self, request, id, *args, **kwargs):
@@ -149,3 +148,22 @@ class MessagesAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SupportedGoalsAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        token = request.META['HTTP_AUTHORIZATION'].replace('Token ', '')
+        auth_token_entry = AuthtokenToken.objects.get(key=token)
+        user_id = auth_token_entry.user_id
+
+        accepted_supporter_entries = AcceptedSupporter.objects.filter(supporter_id=user_id)
+        goal_serializer_array = []
+        if accepted_supporter_entries:
+            for goal in accepted_supporter_entries:
+                goal_instance = Goal.objects.get(id=goal.goal_id_id)
+                goal_serializer = GoalSerializer(instance=goal_instance)
+                goal_serializer_array.append(goal_serializer.data)
+            return Response({'goals': goal_serializer_array}, status=status.HTTP_201_CREATED)
+        return Response({"response": "User doesn't support any goals"}, status=status.HTTP_400_BAD_REQUEST)
