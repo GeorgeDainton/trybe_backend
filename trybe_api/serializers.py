@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Goal, AuthtokenToken, AuthUser, InvitedSupporter, AcceptedSupporter
+from .models import Goal, AuthtokenToken, AuthUser, InvitedSupporter, AcceptedSupporter, Messages
 
 
 class AcceptedSupporterSerializer(serializers.ModelSerializer):
@@ -11,7 +11,8 @@ class AcceptedSupporterSerializer(serializers.ModelSerializer):
 class GoalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Goal
-        fields = ('id', 'goal_description', 'created_at', 'owner') 
+        fields = ('id', 'goal_description', 'created_at', 'owner', 'progress') 
+        # related_object = AcceptedSupporter
 
 
 class AuthUserSerializer(serializers.ModelSerializer):
@@ -30,3 +31,12 @@ class InvitedSupporterSerializer(serializers.ModelSerializer):
     class Meta:
         model = InvitedSupporter
         fields = ('id', 'goal_id', 'supporter_email')
+
+
+class MessagesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Messages
+        fields = ('id', 'goal_id', 'sender_id', 'sender_username', 'message', 'created_at')
+        
+
+
