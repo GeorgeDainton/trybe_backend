@@ -21,7 +21,7 @@ class AuthUser(models.Model):
 
 class Goal(models.Model):
     goal_description = models.CharField(max_length=180)
-    owner = models.ForeignKey(AuthUser, related_name='goals', default=1, on_delete=models.CASCADE)
+    owner = models.ForeignKey(AuthUser, related_name='goals', on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
