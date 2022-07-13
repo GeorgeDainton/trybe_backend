@@ -50,7 +50,6 @@ class InvitedSupporter(models.Model):
         unique_together = ('goal_id', 'supporter_email')
     
 
-
 class Messages(models.Model):
     goal_id = models.ForeignKey(Goal, related_name='messages', on_delete=models.CASCADE)
     sender_id = models.ForeignKey(AuthUser, related_name='messages', on_delete=models.CASCADE)
@@ -63,6 +62,7 @@ class Messages(models.Model):
 
     class Meta:
         ordering = ['created_at']
+
 
 class AcceptedSupporter(models.Model):
     goal_id = models.ForeignKey(Goal, related_name='accepted_supporters', on_delete=models.CASCADE)
