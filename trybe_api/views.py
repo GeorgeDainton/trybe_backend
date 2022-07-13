@@ -4,8 +4,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
-from .models import AuthUser, Goal, AuthtokenToken, InvitedSupporter, Messages
+
+from .models import AuthUser, Goal, AuthtokenToken, InvitedSupporter, Messages, AcceptedSupporter
 from .serializers import GoalSerializer, InvitedSupporterSerializer, AcceptedSupporterSerializer, MessagesSerializer
+
 
 class GoalAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -19,13 +21,17 @@ class GoalAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         token = request.META['HTTP_AUTHORIZATION'].replace('Token ', '')
+        print(token)
         auth_token_entry = AuthtokenToken.objects.get(key=token)
+        print(auth_token_entry)
         user_id = auth_token_entry.user_id
+        print(user_id)
 
         data = {
             'goal_description': request.data.get('goal_description'),
             'owner': user_id,
         }
+        print(data)
         serializer = GoalSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
@@ -37,6 +43,8 @@ class GoalDetailAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, id, *args, **kwargs):
+        # supporters_array = AcceptedSupporter.objects.filter(id=id)
+
         goal = Goal.objects.get(id=id)
         serializer = GoalSerializer(goal)
         return Response(serializer.data, status=status.HTTP_200_OK)
