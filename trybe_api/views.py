@@ -21,17 +21,12 @@ class GoalAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         token = request.META['HTTP_AUTHORIZATION'].replace('Token ', '')
-        print(token)
         auth_token_entry = AuthtokenToken.objects.get(key=token)
-        print(auth_token_entry)
         user_id = auth_token_entry.user_id
-        print(user_id)
-
         data = {
             'goal_description': request.data.get('goal_description'),
             'owner': user_id,
         }
-        print(data)
         serializer = GoalSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
@@ -43,11 +38,18 @@ class GoalDetailAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, id, *args, **kwargs):
-        # supporters_array = AcceptedSupporter.objects.filter(id=id)
+        supporter_entries = AcceptedSupporter.objects.filter(goal_id=id)
+        supporter_serializer_array = []
 
+        for supporter in supporter_entries:
+            supporter_instance = AuthUser.objects.get(id=supporter.supporter_id_id)
+            supporter_serializer = AuthUserSerializer(instance=supporter_instance)
+            supporter_serializer_array.append(supporter_serializer.data)
+        
         goal = Goal.objects.get(id=id)
         serializer = GoalSerializer(goal)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response({"goal": serializer.data, "supporters" : supporter_serializer_array}, status=status.HTTP_200_OK)
 
     def delete(self, request, id, *args, **kwargs):
         if Goal.objects.filter(id=id).exists():
@@ -116,7 +118,7 @@ class AcceptedSupporterAPIView(APIView):
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response(serializer_array, status=status.HTTP_200_OK)
         return Response(
-            {"response": "User doesn't support any goals"},
+            {"response": "User doesn't exist or support any goals"},
             status=status.HTTP_400_BAD_REQUEST
         )
 

@@ -7,9 +7,8 @@ class AcceptedSupporterSerializer(serializers.ModelSerializer):
         model = AcceptedSupporter
         fields = ('id', 'goal_id', 'supporter_email', 'supporter_id')
 
-class GoalSerializer(serializers.ModelSerializer):
-    # supporters = serializers.PrimaryKeyRelatedField(many=True, allow_null=True, read_only=False, queryset=AcceptedSupporter.objects.all())
 
+class GoalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Goal
         fields = ('id', 'goal_description', 'created_at', 'owner', 'progress') 
@@ -32,6 +31,7 @@ class InvitedSupporterSerializer(serializers.ModelSerializer):
     class Meta:
         model = InvitedSupporter
         fields = ('id', 'goal_id', 'supporter_email')
+
 
 class MessagesSerializer(serializers.ModelSerializer):
     class Meta:
