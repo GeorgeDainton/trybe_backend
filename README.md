@@ -17,40 +17,53 @@
 Download and install the Postman API platform: https://www.postman.com/downloads/
 
 Run the following requests using curl from the command line:
-1. **Create a user**:
+
+### Create a User
+
+```
 curl -X POST "http://127.0.0.1:8000/auth/users/" \
 --data 'username=goalhaver&email=goals@goal.com&password=inneedofsupport'
+```
 
-**Returns**:
+Returns:
 
-{
-"email": "goalhaver@goal.com",
-"username": "goalhaver",
-"id": 1
-}
-
-
-  
-2. **Login**:
+```
+    {
+    "email": "goalhaver@goal.com",
+    "username": "goalhaver",
+    "id": 1
+    }
+```
+ 
+### Login:
+```
   curl -X POST "http://127.0.0.1:8000/auth/token/login/" \
    --data 'username=goalhaver&password=inneedofsupport'
+```
 
-**Returns**:
+Returns:
 
+```
 {
     "auth_token": "d671adc4f70d1024aa6b1f80a9c84ef0278f404c"
 }
-
+```
 
   
 **This will return an authorization token which needs to be used in every logged in request, referred to hereafter as auth_token**
 
-3. **Create a Goal**
+### Create a Goal:
+
+```
 curl "http://127.0.0.1:8000/goals/" \
 -X POST \
 -H "Content-Type: application/json" \
 -H "Authorization: Token auth_token" \
 -d '{"goal_description":"Goal"}'
+```
+
+Returns:
+```
 
 {
   "id": 1,
@@ -59,15 +72,18 @@ curl "http://127.0.0.1:8000/goals/" \
   "owner": 1,
   "progress": "0.01"
 }
+```
 
 
-4. **See Goals**
+### See Goals:
+```
 curl -X GET 'http://127.0.0.1:8000/goals/' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Token auth_token'
+```
 
-
-**Returns**:
+Returns:
+```
 
 [
   {
@@ -78,28 +94,38 @@ curl -X GET 'http://127.0.0.1:8000/goals/' \
     "progress": "0.01"
   }
 ]
+```
 
-5. **Invite Supporter**
+### Invite Supporter:
+
+```
 curl --location --request POST 'http://127.0.0.1:8000/supporters/add/' \
 --header 'Authorization: Token auth_token' \
 --data 'goal_id=1' \
 --data 'supporter_email=supporter@support.com'
-
-**Returns**
+```
+Returns:
+```
 
 {
     "id": 1,
     "goal_id": 1,
     "supporter_email": "supporter@support.com"
 }
+```
 
-6. **Registration for Supporter**
+### Registration for Supporter:
+
+```
 curl --location --request POST 'http://127.0.0.1:8000/auth/users/' \
 --form 'username=supporter' \
 --form 'email=supporter@support.com' \
 --form 'password=iwanttohelpyou'
+```
 
-**Returns**
+Returns:
+
+```
 
 {
     "email": "supporter@support.com",
@@ -107,12 +133,19 @@ curl --location --request POST 'http://127.0.0.1:8000/auth/users/' \
     "id": 2
 }
 
-7. **Login for Supporter**
+```
+
+### Login for Supporter:
+
+```
 curl --location --request POST 'http://127.0.0.1:8000/auth/token/login/' \
 --form 'username=supporter' \
 --form 'password=iwanttohelpyou'
+```
 
-**Returns**
+Returns:
+
+```
 
 
 
