@@ -10,35 +10,38 @@
 [Luke](https://github.com/lukestorey95) <br>
 [Gawain](https://github.com/gawainhewitt) <br>
 
-## Introduction
+## <u> Introduction </u> 
+
+
 
 Welcome to Trybe. This is our [Makers Academy](https://makers.tech/) final project which we have built in 8 days. <br>
 
 Trybe is an app that helps to build and manage a community in the supporting of achieving bespoke goals. The idea is a group of friends, your TRYBE (TM) will help motivate you with encouragement, while the app also allows you to track and share progress. We concieved it as a type of inverse to the Strava style of tracking, in that your network is small and private, and goals can range from things you would be proud to share, to things you may want to stay discreet about.
+<br>
 
-## Design, concept and build
+
+## <u> Design, concept and build </u>
+
 
 Trybe backend is built using a Python based web framework called the Django Rest Framework. It's sister frontend project can be found [here](https://github.com/lukestorey95/trybe-prod)
 
-## Install Dependencies
+## <u> Install Dependencies </u>
 1. pip install -r requirements.txt
 
 
-## Database Migrations 
+## <u> Database Migrations </u>
 1. python manage.py makemigrations
 2. python manage.py migrate
 
 
-## Connect to Server
+## <u> Connect to Server </u>
 1. Local: python manage.py runserver
 
-## Running Requests Using Postman
-
-Download and install the Postman API platform: https://www.postman.com/downloads/
+## <u> Running Requests Using Curl </u>
 
 Run the following requests using curl from the command line:
 
-### Create a User
+#### 1. Create a User
 
 ```
 curl -X POST "http://127.0.0.1:8000/auth/users/" \
@@ -55,7 +58,7 @@ Returns:
     }
 ```
  
-### Login:
+#### 2. Login:
 ```
   curl -X POST "http://127.0.0.1:8000/auth/token/login/" \
    --data 'username=goalhaver&password=inneedofsupport'
@@ -72,7 +75,7 @@ Returns:
   
 **This will return an authorization token which needs to be used in every logged in request, referred to hereafter as auth_token**
 
-### Create a Goal:
+#### 3. Create a Goal:
 
 ```
 curl "http://127.0.0.1:8000/goals/" \
@@ -95,7 +98,7 @@ Returns:
 ```
 
 
-### See Goals:
+#### 4. See Goals:
 ```
 curl -X GET 'http://127.0.0.1:8000/goals/' \
 --header 'Content-Type: application/json' \
@@ -116,7 +119,7 @@ Returns:
 ]
 ```
 
-### Invite Supporter:
+#### 5. Invite Supporter:
 
 ```
 curl --location --request POST 'http://127.0.0.1:8000/supporters/add/' \
@@ -134,7 +137,7 @@ Returns:
 }
 ```
 
-### Registration for Supporter:
+#### 6. Registration for Supporter:
 
 ```
 curl --location --request POST 'http://127.0.0.1:8000/auth/users/' \
@@ -155,7 +158,7 @@ Returns:
 
 ```
 
-### Login for Supporter:
+#### 7. Login for Supporter:
 
 ```
 curl --location --request POST 'http://127.0.0.1:8000/auth/token/login/' \
@@ -172,7 +175,7 @@ Returns:
 ```
 
 
-8. **Connect to Goal**
+#### 8. Connect to Goal
 ```
 curl --location --request POST 'http://127.0.0.1:8000/supporters/connect/' \
 --header 'Authorization: Token auth_token' \
@@ -180,7 +183,7 @@ curl --location --request POST 'http://127.0.0.1:8000/supporters/connect/' \
 --form 'supporter_id=1'
 ```
 
-**Returns**
+Returns
 ```
 [
     {
@@ -192,14 +195,14 @@ curl --location --request POST 'http://127.0.0.1:8000/supporters/connect/' \
 ]
 ```
 
-9. **Send a supportive message**
+#### 9. Send a supportive message
 ```
 curl --location --request POST 'http://127.0.0.1:8000/goals/1/messages/' \
 --header 'Authorization: Token auth_token' \
 --form 'message="Good show lad keep going!"'
 ```
 
-**Returns**
+Returns
 ```
 {
     "id": 4,
@@ -211,13 +214,13 @@ curl --location --request POST 'http://127.0.0.1:8000/goals/1/messages/' \
 }
 ```
 
-10. **Goal owner can see goal with supportive message(s)**
+#### 10. Goal owner can see goal with supportive message(s)
 ```
 curl --location --request GET 'http://127.0.0.1:8000/goals/1/messages/' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Token auth_token'
 ```
-**Returns**
+Returns
 ```
 [
     {
@@ -255,7 +258,7 @@ curl --location --request GET 'http://127.0.0.1:8000/goals/1/messages/' \
 ]
 ```
 
-11. **Goal owner can edit goal**
+11. Goal owner can edit goal
 ```
 curl --location --request PATCH 'http://127.0.0.1:8000/goals/1/' \
 --header 'Authorization: Token a8353fc692c629d7f6e828929ec1ea35b3003de1' \
@@ -263,7 +266,7 @@ curl --location --request PATCH 'http://127.0.0.1:8000/goals/1/' \
 --form 'progress="1.0"'
 ```
 
-**Returns**
+Returns
 ```
 {
     "id": 5,
