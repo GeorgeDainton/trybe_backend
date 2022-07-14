@@ -1,4 +1,24 @@
-# Trybe Backend README
+# TRYBE Backend
+
+![picture of the app](./images/theApp.jpg)
+
+## Team
+
+[Luiza](https://github.com/LGretzk) <br>
+[Kieran](https://github.com/K-Carty) <br>
+[George](https://github.com/GeorgeDainton) <br>
+[Luke](https://github.com/lukestorey95) <br>
+[Gawain](https://github.com/gawainhewitt) <br>
+
+## Introduction
+
+Welcome to Trybe. This is our [Makers Academy](https://makers.tech/) final project which we have built in 8 days. <br>
+
+Trybe is an app that helps to build and manage a community in the supporting of achieving bespoke goals. The idea is a group of friends, your TRYBE (TM) will help motivate you with encouragement, while the app also allows you to track and share progress. We concieved it as a type of inverse to the Strava style of tracking, in that your network is small and private, and goals can range from things you would be proud to share, to things you may want to stay discreet about.
+
+## Design, concept and build
+
+Trybe backend is built using a Python based web framework called the Django Rest Framework. It's sister frontend project can be found [here](https://github.com/lukestorey95/trybe-prod)
 
 ## Install Dependencies
 1. pip install -r requirements.txt
@@ -146,21 +166,22 @@ curl --location --request POST 'http://127.0.0.1:8000/auth/token/login/' \
 Returns:
 
 ```
-
-
-
 {
     "auth_token": "34e85c6c711dea327f4f67df545c6912ac2cfad9"
 }
+```
+
 
 8. **Connect to Goal**
+```
 curl --location --request POST 'http://127.0.0.1:8000/supporters/connect/' \
 --header 'Authorization: Token auth_token' \
 --form 'supporter_email=supporter@support.com' \
 --form 'supporter_id=1'
+```
 
 **Returns**
-
+```
 [
     {
         "id": 1,
@@ -169,14 +190,17 @@ curl --location --request POST 'http://127.0.0.1:8000/supporters/connect/' \
         "supporter_id": 1
     }
 ]
+```
 
 9. **Send a supportive message**
+```
 curl --location --request POST 'http://127.0.0.1:8000/goals/1/messages/' \
 --header 'Authorization: Token auth_token' \
 --form 'message="Good show lad keep going!"'
+```
 
 **Returns**
-
+```
 {
     "id": 4,
     "goal_id": 1,
@@ -185,14 +209,16 @@ curl --location --request POST 'http://127.0.0.1:8000/goals/1/messages/' \
     "message": "And again",
     "created_at": "2022-07-13T15:43:16.841716+01:00"
 }
+```
 
 10. **Goal owner can see goal with supportive message(s)**
+```
 curl --location --request GET 'http://127.0.0.1:8000/goals/1/messages/' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Token auth_token'
-
+```
 **Returns**
-
+```
 [
     {
         "id": 1,
@@ -227,17 +253,18 @@ curl --location --request GET 'http://127.0.0.1:8000/goals/1/messages/' \
         "created_at": "2022-07-13T15:43:16.841716+01:00"
     }
 ]
+```
 
 11. **Goal owner can edit goal**
-
+```
 curl --location --request PATCH 'http://127.0.0.1:8000/goals/1/' \
 --header 'Authorization: Token a8353fc692c629d7f6e828929ec1ea35b3003de1' \
 --form 'goal_description="Patterned"' \
 --form 'progress="1.0"'
-
+```
 
 **Returns**
-
+```
 {
     "id": 5,
     "goal_description": "Getting there",
@@ -245,3 +272,11 @@ curl --location --request PATCH 'http://127.0.0.1:8000/goals/1/' \
     "owner": 3,
     "progress": "0.50"
 }
+```
+## Impact Effort Assessment
+
+![impact effor assessment graph](./images/impact_effort.jpg)
+
+## Wireframe
+
+![sketch wireframe of design](./images/wireframe.jpg)
