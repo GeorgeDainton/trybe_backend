@@ -280,3 +280,8 @@ curl --location --request PATCH 'http://127.0.0.1:8000/goals/1/' \
 ## Wireframe
 
 ![sketch wireframe of design](./images/wireframe.jpg)
+
+## Video of app working 
+
+[![Video of Trybe](./images/videoLinkImage.jpg)](https://www.youtube.com/watch?v=qts_DSZA9IA "Trybe Video")
+
