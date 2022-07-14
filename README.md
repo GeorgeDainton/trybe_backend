@@ -1,6 +1,6 @@
 # TRYBE Backend
 
-![picture of the app](./images/theApp.jpg)
+<img src="./images/theApp.png" width="200" alt="picture of the app">
 
 ## Team
 
