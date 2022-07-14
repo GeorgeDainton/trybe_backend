@@ -195,7 +195,7 @@ Returns
 ]
 ```
 
-#### 9. Send a supportive message
+### 9. Send a supportive message
 ```
 curl --location --request POST 'http://127.0.0.1:8000/goals/1/messages/' \
 --header 'Authorization: Token auth_token' \
@@ -214,7 +214,7 @@ Returns
 }
 ```
 
-#### 10. Goal owner can see goal with supportive message(s)
+### 10. Goal owner can see goal with supportive message(s)
 ```
 curl --location --request GET 'http://127.0.0.1:8000/goals/1/messages/' \
 --header 'Content-Type: application/json' \
@@ -258,7 +258,21 @@ Returns
 ]
 ```
 
-##### 11. Goal owner can edit goal
+#### 11. Goal owner can see supporters on their goal
+
+```
+curl -X GET 'http://127.0.0.1:8000/goals/1/' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Token auth_token'
+```
+
+Returns
+```
+{
+  "goal":{"id":1,"goal_description":"Goal","created_at":"2022-07-14T16:05:06.883355+01:00","owner":1,"progress":"0.01"},"supporters":[{"id":1,"username":"goalhaver","email":"goals@goal.com"}]}% 
+```
+
+#### 12. Goal owner can edit goal
 ```
 curl --location --request PATCH 'http://127.0.0.1:8000/goals/1/' \
 --header 'Authorization: Token a8353fc692c629d7f6e828929ec1ea35b3003de1' \
@@ -277,7 +291,7 @@ Returns
 }
 ```
 
-#### 12. Goal owner can delete goal
+### 13. Goal owner can delete goal
 ```
 curl --location --request DELETE 'http://127.0.0.1:8000/goals/1/' \
 --header 'Authorization: Token a8353fc692c629d7f6e828929ec1ea35b3003de1'
