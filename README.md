@@ -195,7 +195,7 @@ Returns
 ]
 ```
 
-### 9. Send a supportive message
+#### 9. Send a supportive message
 ```
 curl --location --request POST 'http://127.0.0.1:8000/goals/1/messages/' \
 --header 'Authorization: Token auth_token' \
@@ -214,7 +214,7 @@ Returns
 }
 ```
 
-### 10. Goal owner can see goal with supportive message(s)
+#### 10. Goal owner can see goal with supportive message(s)
 ```
 curl --location --request GET 'http://127.0.0.1:8000/goals/1/messages/' \
 --header 'Content-Type: application/json' \
@@ -305,7 +305,7 @@ Returns
 }
 ```
 
-### 13. Goal owner can delete goal
+#### 13. Goal owner can delete goal
 ```
 curl --location --request DELETE 'http://127.0.0.1:8000/goals/1/' \
 --header 'Authorization: Token a8353fc692c629d7f6e828929ec1ea35b3003de1'
