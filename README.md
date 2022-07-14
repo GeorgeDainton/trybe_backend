@@ -269,7 +269,21 @@ curl -X GET 'http://127.0.0.1:8000/goals/1/' \
 Returns
 ```
 {
-  "goal":{"id":1,"goal_description":"Goal","created_at":"2022-07-14T16:05:06.883355+01:00","owner":1,"progress":"0.01"},"supporters":[{"id":1,"username":"goalhaver","email":"goals@goal.com"}]}% 
+    "goal": {
+        "id": 1,
+        "goal_description": "goal",
+        "created_at": "2022-07-14T16:20:21.949504+01:00",
+        "owner": 1,
+        "progress": "0.01"
+    },
+    "supporters": [
+        {
+            "id": 2,
+            "username": "supporter",
+            "email": "supporter@support.com"
+        }
+    ]
+}
 ```
 
 #### 12. Goal owner can edit goal
