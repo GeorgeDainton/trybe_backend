@@ -258,7 +258,7 @@ Returns
 ]
 ```
 
-11. Goal owner can edit goal
+##### 11. Goal owner can edit goal
 ```
 curl --location --request PATCH 'http://127.0.0.1:8000/goals/1/' \
 --header 'Authorization: Token a8353fc692c629d7f6e828929ec1ea35b3003de1' \
@@ -276,6 +276,21 @@ Returns
     "progress": "0.50"
 }
 ```
+
+#### 12. Goal owner can delete goal
+```
+curl --location --request DELETE 'http://127.0.0.1:8000/goals/1/' \
+--header 'Authorization: Token a8353fc692c629d7f6e828929ec1ea35b3003de1'
+```
+
+Returns:
+```
+{
+    "response": "Goal Deleted",
+    "goal_id": 1
+}
+```
+
 ## Impact Effort Assessment
 
 ![impact effor assessment graph](./images/impact_effort.jpg)
